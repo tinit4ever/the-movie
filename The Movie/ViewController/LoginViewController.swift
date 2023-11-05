@@ -1,0 +1,183 @@
+//
+//  LoginViewController.swift
+//  The Movie
+//
+//  Created by tinit on 04/11/2023.
+//
+
+import UIKit
+import FirebaseAuth
+
+class LoginViewController: UIViewController {
+    
+    private let backgroundImage: UIImageView = {
+        let imageView = UIImageView(frame: .zero)
+        imageView.contentMode = .scaleAspectFill
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
+    
+    private let stackView: UIStackView = {
+        let stackView = UIStackView()
+        
+        stackView.axis = .vertical
+        stackView.spacing = 20
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        
+        return stackView
+    }()
+    
+    private let mailTextField: UITextField = {
+        let textField = UITextField()
+        
+        textField.autocapitalizationType = .none
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.textColor = .white
+        
+        let placeholderAttributes: [NSAttributedString.Key: Any] = [
+            .foregroundColor: UIColor.orange
+        ]
+        let attributedPlaceholder = NSAttributedString(string: "Email", attributes: placeholderAttributes)
+        
+        textField.attributedPlaceholder = attributedPlaceholder
+        
+        
+        return textField
+    }()
+
+    private let passwordTextField: UITextField = {
+        let textField = UITextField()
+        
+        textField.autocapitalizationType = .none
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.textColor = .white
+        textField.isSecureTextEntry = true
+        
+        let showPasswordButton = UIButton(type: .custom)
+        showPasswordButton.setImage(UIImage(systemName: "eye"), for: .normal)
+        showPasswordButton.tintColor = .gray
+        showPasswordButton.addTarget(self, action: #selector(togglePasswordVisibility), for: .touchUpInside)
+        
+        textField.rightView = showPasswordButton
+        textField.rightViewMode = .always
+        
+        let placeholderAttributes: [NSAttributedString.Key: Any] = [
+            .foregroundColor: UIColor.orange
+        ]
+        let attributedPlaceholder = NSAttributedString(string: "Password", attributes: placeholderAttributes)
+        
+        textField.attributedPlaceholder = attributedPlaceholder
+        
+        return textField
+    }()
+    
+    private let loginButton: UIButton = {
+        let button = UIButton()
+        
+        var configuration = UIButton.Configuration.gray()
+        configuration.title = "Login"
+        configuration.baseBackgroundColor = .white
+        
+        button.configuration = configuration
+        button.translatesAutoresizingMaskIntoConstraints = false
+        
+        return button
+    }()
+    
+    private let errorLabel: UILabel = {
+        let label = UILabel()
+        
+        label.textColor = .red
+        label.text = "ERROR"
+        label.textAlignment = .center
+        label.numberOfLines = 0
+        label.lineBreakMode = .byWordWrapping
+        
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = .systemBackground
+        setupUI()
+        setupAction()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        errorLabel.isHidden = true
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        errorLabel.isHidden = true
+    }
+    
+    // SetupUI
+    func setupUI() {
+        view.addSubview(backgroundImage)
+        
+        let gifImage = UIImage.gifImageWithName("background")
+        backgroundImage.image = gifImage
+        NSLayoutConstraint.activate([
+            backgroundImage.topAnchor.constraint(equalTo: view.topAnchor),
+            backgroundImage.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            backgroundImage.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            backgroundImage.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+        ])
+        
+        stackView.addArrangedSubview(mailTextField)
+        stackView.addArrangedSubview(passwordTextField)
+        stackView.addArrangedSubview(loginButton)
+        stackView.addArrangedSubview(errorLabel)
+        view.addSubview(stackView)
+        NSLayoutConstraint.activate([
+            stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
+            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30)
+        ])
+        
+        NSLayoutConstraint.activate([
+            loginButton.heightAnchor.constraint(equalToConstant: 40),
+            mailTextField.heightAnchor.constraint(equalTo: loginButton.heightAnchor),
+            passwordTextField.heightAnchor.constraint(equalTo: loginButton.heightAnchor)
+        ])
+        
+    }
+    
+    // Setup Action
+    func setupAction() {
+        loginButton.addTarget(self, action: #selector(loginButtonTapped), for: .touchUpInside)
+    }
+    
+    // Catch Action
+    @objc
+    func loginButtonTapped() {
+        if let mail = mailTextField.text,
+           let password = passwordTextField.text {
+            Auth.auth().signIn(withEmail: mail, password: password) { [self] result, error in
+                if error != nil {
+                    errorLabel.isHidden = false
+                    errorLabel.text = error?.localizedDescription
+                } else {
+                    let homeViewController = HomeViewController()
+                    homeViewController.setViewModel(viewModel: HomeControllerViewModel(baseFetcher: BaseFetcher()))
+                    DispatchQueue.main.async {
+                        self.navigationController?.setViewControllers([homeViewController], animated: true)
+                    }
+                }
+            }
+        }
+    }
+    
+    @objc
+    private func togglePasswordVisibility() {
+        passwordTextField.isSecureTextEntry.toggle()
+        let eyeSymbol = passwordTextField.isSecureTextEntry ? "eye" : "eye.slash"
+        if let showPasswordButton = passwordTextField.rightView as? UIButton {
+            showPasswordButton.setImage(UIImage(systemName: eyeSymbol), for: .normal)
+        }
+    }
+}
+
+extension LoginViewController: UITextFieldDelegate {
+}
