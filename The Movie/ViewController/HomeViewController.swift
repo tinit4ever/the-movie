@@ -70,6 +70,8 @@ class HomeViewController: UIViewController {
     @objc
     func logoutButtonTapped() {
         let viewController = ViewController()
+        UserDefaults().set(false, forKey: "isLoggedIn")
+        UserDefaults.standard.removeObject(forKey: "isLoggedIn")
         DispatchQueue.main.async {
             self.navigationController?.setViewControllers([viewController], animated: true)
         }

@@ -159,6 +159,7 @@ class LoginViewController: UIViewController {
                     errorLabel.isHidden = false
                     errorLabel.text = error?.localizedDescription
                 } else {
+                    UserDefaults.standard.set(true, forKey: "isLoggedIn")
                     let homeViewController = HomeViewController()
                     homeViewController.setViewModel(viewModel: HomeControllerViewModel(baseFetcher: BaseFetcher()))
                     DispatchQueue.main.async {
