@@ -40,7 +40,16 @@ extension HomeControllerViewModel:  HomeControllerViewModelProtocol {
     
     private func getMovieSuccess(data: [Movie]) {
         data.forEach { entity in
-            movies.append(entity)
+            let movie = Movie(
+                id: entity.id,
+                originalTitle: entity.originalTitle,
+                overview: entity.overview,
+                originalLanguage: entity.originalLanguage,
+                posterPath: "https://image.tmdb.org/t/p/w500\(entity.posterPath!)",
+                backdropPath: "https://image.tmdb.org/t/p/w500\(entity.backdropPath!)",
+                popularity: entity.popularity,
+                genreIds: entity.genreIds)
+            movies.append(movie)
         }
     }
     

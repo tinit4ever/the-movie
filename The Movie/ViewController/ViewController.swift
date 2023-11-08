@@ -102,6 +102,7 @@ class ViewController: UIViewController {
     @objc
     func loginButtonTapped() {
         let loginViewController = LoginViewController()
+        loginViewController.setViewModel(viewModel: LoginViewModel())
         self.navigationController?.pushViewController(loginViewController, animated: true)
     }
 }

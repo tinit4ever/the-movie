@@ -34,6 +34,9 @@
 		1390411D2AF7D2C800781EB9 /* HomeControllerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1390411B2AF7D2C800781EB9 /* HomeControllerViewModel.swift */; };
 		139041202AF7D38E00781EB9 /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = 1390411F2AF7D38E00781EB9 /* SDWebImage */; };
 		139041222AF7D38E00781EB9 /* SDWebImageMapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 139041212AF7D38E00781EB9 /* SDWebImageMapKit */; };
+		13A4B95B2AF9B69B00B9EA23 /* UserDefaultKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13A4B95A2AF9B69B00B9EA23 /* UserDefaultKeys.swift */; };
+		13A4B95D2AF9BAF200B9EA23 /* RootViewControllerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13A4B95C2AF9BAF200B9EA23 /* RootViewControllerManager.swift */; };
+		13A4B95F2AF9C7CE00B9EA23 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13A4B95E2AF9C7CE00B9EA23 /* LoginViewModel.swift */; };
 		13D44AED2AF6430B002F0398 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13D44AEC2AF6430B002F0398 /* SignUpViewController.swift */; };
 		13D44AEF2AF6460D002F0398 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13D44AEE2AF6460D002F0398 /* HomeViewController.swift */; };
 /* End PBXBuildFile section */
@@ -81,6 +84,9 @@
 		139041132AF7D28900781EB9 /* FilmCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilmCollectionViewCell.swift; sourceTree = "<group>"; };
 		1390411A2AF7D2C800781EB9 /* MovieDetailsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieDetailsViewModel.swift; sourceTree = "<group>"; };
 		1390411B2AF7D2C800781EB9 /* HomeControllerViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeControllerViewModel.swift; sourceTree = "<group>"; };
+		13A4B95A2AF9B69B00B9EA23 /* UserDefaultKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultKeys.swift; sourceTree = "<group>"; };
+		13A4B95C2AF9BAF200B9EA23 /* RootViewControllerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewControllerManager.swift; sourceTree = "<group>"; };
+		13A4B95E2AF9C7CE00B9EA23 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		13D44AEC2AF6430B002F0398 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		13D44AEE2AF6460D002F0398 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -143,11 +149,11 @@
 				136A4CD72AF63B490014F56D /* SceneDelegate.swift */,
 				136A4CE12AF63B4A0014F56D /* Assets.xcassets */,
 				139041032AF7CC7700781EB9 /* background.gif */,
+				139041062AF7D18000781EB9 /* Manager */,
 				136A4D082AF63BB30014F56D /* ViewController */,
 				139041122AF7D28900781EB9 /* View */,
 				139041192AF7D2C800781EB9 /* ViewModel */,
 				1390410B2AF7D1B500781EB9 /* Model */,
-				139041062AF7D18000781EB9 /* Manger */,
 				138BD39F2AF7AB5500DBABC9 /* Extension */,
 				136A4CE32AF63B4A0014F56D /* LaunchScreen.storyboard */,
 				137F09272AF681B40006444C /* GoogleService-Info.plist */,
@@ -194,13 +200,14 @@
 			path = Extension;
 			sourceTree = "<group>";
 		};
-		139041062AF7D18000781EB9 /* Manger */ = {
+		139041062AF7D18000781EB9 /* Manager */ = {
 			isa = PBXGroup;
 			children = (
 				139041072AF7D18000781EB9 /* APIBaseFetcher.swift */,
 				139041082AF7D18000781EB9 /* APICaller.swift */,
+				13A4B95C2AF9BAF200B9EA23 /* RootViewControllerManager.swift */,
 			);
-			path = Manger;
+			path = Manager;
 			sourceTree = "<group>";
 		};
 		1390410B2AF7D1B500781EB9 /* Model */ = {
@@ -208,6 +215,7 @@
 			children = (
 				1390410C2AF7D1B500781EB9 /* Movie.swift */,
 				1390410D2AF7D1B500781EB9 /* Genre.swift */,
+				13A4B95A2AF9B69B00B9EA23 /* UserDefaultKeys.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -225,6 +233,7 @@
 			children = (
 				1390411A2AF7D2C800781EB9 /* MovieDetailsViewModel.swift */,
 				1390411B2AF7D2C800781EB9 /* HomeControllerViewModel.swift */,
+				13A4B95E2AF9C7CE00B9EA23 /* LoginViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -383,11 +392,14 @@
 				136A4CE02AF63B490014F56D /* The_Movie.xcdatamodeld in Sources */,
 				1390411C2AF7D2C800781EB9 /* MovieDetailsViewModel.swift in Sources */,
 				139041162AF7D28900781EB9 /* FilmCollectionViewCell.swift in Sources */,
+				13A4B95D2AF9BAF200B9EA23 /* RootViewControllerManager.swift in Sources */,
 				1390411D2AF7D2C800781EB9 /* HomeControllerViewModel.swift in Sources */,
+				13A4B95B2AF9B69B00B9EA23 /* UserDefaultKeys.swift in Sources */,
 				136A4CD82AF63B490014F56D /* SceneDelegate.swift in Sources */,
 				13D44AED2AF6430B002F0398 /* SignUpViewController.swift in Sources */,
 				13D44AEF2AF6460D002F0398 /* HomeViewController.swift in Sources */,
 				1390410E2AF7D1B500781EB9 /* Movie.swift in Sources */,
+				13A4B95F2AF9C7CE00B9EA23 /* LoginViewModel.swift in Sources */,
 				139041092AF7D18000781EB9 /* APIBaseFetcher.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

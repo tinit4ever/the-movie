@@ -128,7 +128,10 @@ class MovieDetailsViewController: UIViewController {
     func setupData() {
         if let movie = movie, let viewModel = viewModel {
             
-            let genreIDs: [Int] = movie.genre_ids
+//            let genreIDs: [Int] = movie.genreIds
+            guard let genreIDs = movie.genreIds else {
+                return
+            }
             let genreNames: [String] = viewModel.genres
                 .filter { genre in genreIDs.contains(genre.id) }
                 .compactMap { $0.name }
@@ -136,18 +139,18 @@ class MovieDetailsViewController: UIViewController {
             let genreString = "Genre: " + genreNames.joined(separator: ", ")
             
             DispatchQueue.main.async { [weak self] in
-                self?.titleLabel.text = movie.original_title
+                self?.titleLabel.text = movie.originalTitle
                 self?.genreLabel.text = genreString
-                self?.languageLabel.text = "Language:  \(movie.original_language ?? "")"
+                self?.languageLabel.text = "Language:  \(movie.originalLanguage ?? "")"
                 self?.popularityLabel.text = "Popularity: \(movie.popularity)"
                 self?.synopsisLabel.text = movie.overview
             }
             
-            guard let backdropUrl = URL(string: "https://image.tmdb.org/t/p/w500\(movie.backdrop_path!)") else {
+            guard let backdropUrl = URL(string: "https://image.tmdb.org/t/p/w500\(movie.backdropPath!)") else {
                 return
             }
             
-            guard let posterUrl = URL(string: "https://image.tmdb.org/t/p/w500\(movie.poster_path!)") else {
+            guard let posterUrl = URL(string: "https://image.tmdb.org/t/p/w500\(movie.posterPath!)") else {
                 return
             }
             self.backdropImage.sd_setImage(with: backdropUrl, completed: nil)

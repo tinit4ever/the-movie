@@ -117,11 +117,11 @@ class FilmCollectionViewCell: UICollectionViewCell {
     }
     
     func confiure(with movie: Movie) {
-        guard let url = URL(string: "https://image.tmdb.org/t/p/w500\(movie.poster_path!)") else {
+        guard let url = URL(string: movie.posterPath!) else {
             return
         }
         imageView.sd_setImage(with: url, completed: nil)
-        titleLabel.text = movie.original_title
-        popularityLabel.text = "Popular: \(movie.popularity)"
+        titleLabel.text = movie.originalTitle
+        popularityLabel.text = "Popular: \(movie.popularity ?? 99999)"
     }
 }

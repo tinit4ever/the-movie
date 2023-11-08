@@ -9,15 +9,16 @@ import UIKit
 import FirebaseAuth
 
 class LoginViewController: UIViewController {
+    var viewModel: LoginViewModelProtocol?
     
-    private let backgroundImage: UIImageView = {
+    private lazy var backgroundImage: UIImageView = {
         let imageView = UIImageView(frame: .zero)
         imageView.contentMode = .scaleAspectFill
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
     
-    private let stackView: UIStackView = {
+    private lazy var stackView: UIStackView = {
         let stackView = UIStackView()
         
         stackView.axis = .vertical
@@ -27,7 +28,7 @@ class LoginViewController: UIViewController {
         return stackView
     }()
     
-    private let mailTextField: UITextField = {
+    private lazy var mailTextField: UITextField = {
         let textField = UITextField()
         
         textField.autocapitalizationType = .none
@@ -44,8 +45,8 @@ class LoginViewController: UIViewController {
         
         return textField
     }()
-
-    private let passwordTextField: UITextField = {
+    
+    private lazy var passwordTextField: UITextField = {
         let textField = UITextField()
         
         textField.autocapitalizationType = .none
@@ -71,7 +72,7 @@ class LoginViewController: UIViewController {
         return textField
     }()
     
-    private let loginButton: UIButton = {
+    private lazy var loginButton: UIButton = {
         let button = UIButton()
         
         var configuration = UIButton.Configuration.gray()
@@ -84,7 +85,7 @@ class LoginViewController: UIViewController {
         return button
     }()
     
-    private let errorLabel: UILabel = {
+    private lazy var errorLabel: UILabel = {
         let label = UILabel()
         
         label.textColor = .red
@@ -149,26 +150,53 @@ class LoginViewController: UIViewController {
         loginButton.addTarget(self, action: #selector(loginButtonTapped), for: .touchUpInside)
     }
     
+    func setViewModel(viewModel: LoginViewModelProtocol) {
+        self.viewModel = viewModel
+    }
+    
     // Catch Action
     @objc
     func loginButtonTapped() {
-        if let mail = mailTextField.text,
-           let password = passwordTextField.text {
-            Auth.auth().signIn(withEmail: mail, password: password) { [self] result, error in
-                if error != nil {
+        guard let mail = mailTextField.text,
+              let password = passwordTextField.text else {
+            return
+        }
+        
+        viewModel?.login(mail, password) { errorString in
+            if let errorString = errorString {
+                DispatchQueue.main.async { [self] in
                     errorLabel.isHidden = false
-                    errorLabel.text = error?.localizedDescription
-                } else {
-                    UserDefaults.standard.set(true, forKey: "isLoggedIn")
-                    let homeViewController = HomeViewController()
-                    homeViewController.setViewModel(viewModel: HomeControllerViewModel(baseFetcher: BaseFetcher()))
-                    DispatchQueue.main.async {
-                        self.navigationController?.setViewControllers([homeViewController], animated: true)
-                    }
+                    errorLabel.text = errorString
+                }
+            } else {
+                UserDefaults.standard.set(true, forKey: UserDefaultKeys.isLoggedIn)
+                let homeViewController = HomeViewController()
+                homeViewController.setViewModel(viewModel: HomeControllerViewModel(baseFetcher: BaseFetcher()))
+                DispatchQueue.main.async {
+                    self.navigationController?.setViewControllers([homeViewController], animated: true)
                 }
             }
         }
     }
+    //    @objc
+    //    func loginButtonTapped() {
+    //        if let mail = mailTextField.text,
+    //           let password = passwordTextField.text {
+    //            Auth.auth().signIn(withEmail: mail, password: password) { [self] result, error in
+    //                if error != nil {
+    //                    errorLabel.isHidden = false
+    //                    errorLabel.text = error?.localizedDescription
+    //                } else {
+    //                    UserDefaults.standard.set(true, forKey: "isLoggedIn")
+    //                    let homeViewController = HomeViewController()
+    //                    homeViewController.setViewModel(viewModel: HomeControllerViewModel(baseFetcher: BaseFetcher()))
+    //                    DispatchQueue.main.async {
+    //                        self.navigationController?.setViewControllers([homeViewController], animated: true)
+    //                    }
+    //                }
+    //            }
+    //        }
+    //    }
     
     @objc
     private func togglePasswordVisibility() {
